@@ -1,26 +1,163 @@
 @import "tailwindcss";
 
+@theme {
+  /* Backwater palette */
+  --color-ink: #0f3a33;
+  --color-ink-soft: rgb(15 58 51 / 0.74);
+  --color-ink-muted: rgb(15 58 51 / 0.52);
+  --color-ink-line: rgb(15 58 51 / 0.14);
+  --color-leaf: #8cc06f;
+  --color-leaf-deep: #3f7a3a;
+  --color-kasavu: #c9a24b;
+  --color-kasavu-deep: #a57b26;
+  --color-masala: #b4441c;
+  --color-sand: #f5eee1;
+  --color-cream: #fbf8f1;
+  --color-kayal: #0c4a4a;
+  --color-night: #061a1c;
+
+  --font-display: var(--font-italiana), "Cormorant Garamond", serif;
+  --font-script: var(--font-ms-madi), cursive;
+  --font-sans: var(--font-manrope), "Helvetica Neue", Arial, sans-serif;
+  --font-ml: var(--font-manjari), sans-serif;
+
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  background: #ffffff;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-leaf);
+  color: var(--color-ink);
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: clip;
+}
+
+@layer components {
+  /* Small tracked uppercase label used across sections */
+  .kicker {
+    font-family: var(--font-sans);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  /* Display title with a script line tucked under it */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+  }
+  .script {
+    font-family: var(--font-script);
+    font-weight: 400;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: 0.01em;
+  }
+
+  .polaroid {
+    background: #fff;
+    padding: 8px 8px 8px;
+    box-shadow:
+      0 1px 2px rgb(15 58 51 / 0.06),
+      0 18px 40px -12px rgb(15 58 51 / 0.28);
+  }
+}
+
+/* Moving light across photography — ties sections together */
+.light-wash {
+  position: absolute;
+  inset: -18% 0;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    transparent 28%,
+    rgb(255 240 200 / 0.14) 44%,
+    rgb(255 255 255 / 0.05) 51%,
+    transparent 66%
+  );
+  background-size: 140% 100%;
+  mix-blend-mode: screen;
+  animation: light-travel 18s ease-in-out infinite alternate;
+}
+@keyframes light-travel {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(var(--sway-from, -2deg));
+  }
+  50% {
+    transform: rotate(var(--sway-to, 3deg));
+  }
+}
+.sway {
+  animation: sway var(--sway-duration, 7s) ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light-wash,
+  .sway {
+    animation: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
